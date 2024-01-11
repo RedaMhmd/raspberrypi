@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face and Eyes Detection</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <h1>Face and Eyes Detection</h1>
+    <img id="video-stream" src="{{ url_for('video_feed') }}" width="640" height="480" style="border: 1px solid black;">
+    <p id="eyes-closed-duration">Eyes Closed Duration: <span id="eyes-closed-time">0.0</span> seconds</p>
+    <p id="total-eyes-closed-time">Total Eyes Closed Time: <span id="total-eyes-closed">0.0</span> seconds</p>
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('update_eyes_closed_duration', function(data) {
+            document.getElementById('eyes-closed-time').innerText = data.duration.toFixed(2);
+        });
+
+        socket.on('update_total_eyes_closed_time', function(data) {
+            document.getElementById('total-eyes-closed').innerText = data.duration.toFixed(2);
+        });
+    </script>
+</body>
+</html>
+
